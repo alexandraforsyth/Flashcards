@@ -1,6 +1,7 @@
 math_flashdeck = [
     "Matte 3",
     {"question":"5+2?", "answer":"7", "hint":"6+1"},
+    {"question":"5+3?", "answer":"8", "hint":"7+1"},
     ]
 
 it_flashdeck = [
@@ -25,7 +26,8 @@ def main():
 #         
 #     elif chosen_option == "2":
 #         
-#     elif chosen_option == "3":
+#      elif chosen_option == "3":
+#          create_flashdeck(input("New flashdack title"))
 #         
 #     elif chosen_option == "4":
 #         shutdown()
@@ -56,11 +58,27 @@ def practice(flashdeck):
     for card in flashdeck:
         if type(card) == dict: 
             print(card["question"])
+            answer = input("Answer: ")
+            if answer == card["answer"]:
+                print("Correct")
+            else:
+                print("Incorrect")
 # def flashdecks():
 #     print
 
+def create_flashdeck(title):
+    new_flashdeck_file = open(title, "a")
+    create_flashcard(new_flashdeck_file)
+    
+def create_flashcard(file):
+    question = "\"" + input("Enter question") + "\""
+    answer = "\"" + input("Enter answer") + "\""
+    
+    file.write('{"question":'+ question + ', "answer":'+ answer + '},')
+    
+    
 def shutdown():
     print("Flashdecks shutting down.")
     exit()
     
-main()
+#main()
