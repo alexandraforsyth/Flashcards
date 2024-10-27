@@ -15,7 +15,9 @@ flashdecks = [
     ]
 
 def splash():
-    print("Welcome to Flashdecks, a text-based flashcard program!")
+    print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("     Welcome to Flashdecks,\n a text-based flashcard program!")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
 def main():
     splash()
@@ -81,4 +83,4 @@ def shutdown():
     print("Flashdecks shutting down.")
     exit()
     
-#main()
+main()
