@@ -77,7 +77,7 @@ def practice(flashdeck):
     print (f"You got {correct} out of {len(flashdeck)-1} question(s) correctly.")
     
 def create_flashdeck(title):
-    open(title + ".txt", "a")
+    new_flashdeck_file = open(title + ".txt", "a")
     create_flashcard(title)
     
 def create_flashcard(title):
@@ -85,18 +85,27 @@ def create_flashcard(title):
     question = "\"" + input("Enter question   ") + "\""
     answer = "\"" + input("Enter answer   ") + "\""
     
-    file.write('{"question":'+ question + ', "answer":'+ answer + '},')
+    file.write('{"question":'+ question + ', "answer":'+ answer + '}\n')
     file.close()
     add_another = input("Do you want to add another one? (y/n) ")
     if add_another == "y":
         create_flashcard(title)
     else:
         main()
-    
+        
+def load_file_as_list(title):
+    with open(title + ".txt", 'r') as file:
+        lines = file.readlines()
+    list_of_dict = [json.loads(line.strip()) for line in lines]
+    return(list_of_dict)
+
+
 def view_flashdeck(title):
-    file = open(title + ".txt", "r")
-    list_of_content = [file.read()]
-    print(list_of_content)
+    print(f"FLashdeck: {title}")
+    for card in load_file_as_list(title):
+        print(card["question"])
+        
+
 def shutdown():
     print("Flashdecks shutting down.")
     exit()
