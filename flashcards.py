@@ -9,25 +9,33 @@ it_flashdeck = [
     {"question":"Hur många bit är en byte?", "answer":"8", "hint":"1000"},
     ]
 
+
+# JSON
+# till text eval()
+# pickle
+
+
 flashdecks = [
     math_flashdeck,
     it_flashdeck,
     ]
 
 def splash():
-    print("Welcome to Flashdecks, a text-based flashcard program!")
+    print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("     Welcome to Flashdecks,\n a text-based flashcard program!")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
 def main():
     splash()
     print("1) Practice" + "\n" + "2) My Flashdecks" +"\n" + "3) New Flashdeck" + "\n" + "4) Exit")
-    chosen_option = input("Option: ")
+    chosen_option = input("\nOption: ")
     if chosen_option == "1":
         choose_practice_deck()
 #         
 #     elif chosen_option == "2":
 #         
-#      elif chosen_option == "3":
-#          create_flashdeck(input("New flashdack title"))
+    elif chosen_option == "3":
+        create_flashdeck(input("\nNew flashdeck title  "))
 #         
 #     elif chosen_option == "4":
 #         shutdown()
@@ -67,18 +75,28 @@ def practice(flashdeck):
 #     print
 
 def create_flashdeck(title):
-    new_flashdeck_file = open(title, "a")
-    create_flashcard(new_flashdeck_file)
+    new_flashdeck_file = open(title + ".txt", "a")
+    create_flashcard(title)
     
-def create_flashcard(file):
-    question = "\"" + input("Enter question") + "\""
-    answer = "\"" + input("Enter answer") + "\""
+def create_flashcard(title):
+    file = open(title + ".txt", "a")
+    question = "\"" + input("Enter question   ") + "\""
+    answer = "\"" + input("Enter answer   ") + "\""
     
     file.write('{"question":'+ question + ', "answer":'+ answer + '},')
+    file.close()
+    add_another = input("Do you want to add another one? (y/n) ")
+    if add_another == "y":
+        create_flashcard(title)
+    else:
+        main()
     
-    
+def view_flashdeck(title):
+    file = open(title + ".txt", "r")
+    list_of_content = [file.read()]
+    print(list_of_content)
 def shutdown():
     print("Flashdecks shutting down.")
     exit()
     
-#main()
+# main()
