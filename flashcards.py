@@ -9,12 +9,6 @@ it_flashdeck = [
     {"question":"Hur många bit är en byte?", "answer":"8", "hint":"1000"},
     ]
 
-
-# JSON
-# till text eval()
-# pickle
-
-
 flashdecks = [
     math_flashdeck,
     it_flashdeck,
@@ -31,26 +25,33 @@ def main():
     chosen_option = input("\nOption: ")
     if chosen_option == "1":
         choose_practice_deck()
-#         
-#     elif chosen_option == "2":
-#         
+    elif chosen_option == "2":
+        deck_number = 0
+        print("These are your flashdecks:")
+        for deck in flashdecks:
+            deck_number +=1
+            print(f"{deck_number}) {deck[0]}")       
     elif chosen_option == "3":
-        create_flashdeck(input("\nNew flashdeck title  "))
-#         
-#     elif chosen_option == "4":
-#         shutdown()
-#     else:
-#         while not chosen_option == "1" and not chosen_option == "2" and not chosen_option == "3" and not chosen_option == "4":
-#             print("Please enter valid option.")
-#             chosen_option = input("Option: ")
-#         if chosen_option == "1":
-#             
-#         elif chosen_option == "2":
-#             
-#         elif chosen_option == "3":
-#             
-#         elif chosen_option == "4":
-#             shutdown()  
+        create_flashdeck(input("\nNew flashdeck title  "))  
+    elif chosen_option == "4":
+        shutdown()
+    else:
+        while not chosen_option == "1" and not chosen_option == "2" and not chosen_option == "3" and not chosen_option == "4":
+            print("Please enter valid option.")
+            print("1) Practice" + "\n" + "2) My Flashdecks" +"\n" + "3) New Flashdeck" + "\n" + "4) Exit")
+            chosen_option = input("Option: ")
+        if chosen_option == "1":
+            choose_practice_deck()  
+        elif chosen_option == "2":
+            deck_number = 0
+            print("These are your flashdecks:")
+            for deck in flashdecks:
+                deck_number +=1
+                print(f"{deck_number}) {deck[0]}")    
+        elif chosen_option == "3":
+            create_flashdeck(input("\nNew flashdeck title  "))
+        elif chosen_option == "4":
+            shutdown()  
 
 def choose_practice_deck():
     deck_number = 0
@@ -63,19 +64,20 @@ def choose_practice_deck():
     practice(chosen_deck)
     
 def practice(flashdeck):
+    correct = 0
     for card in flashdeck:
         if type(card) == dict: 
             print(card["question"])
             answer = input("Answer: ")
             if answer == card["answer"]:
                 print("Correct")
+                correct += 1
             else:
                 print("Incorrect")
-# def flashdecks():
-#     print
-
+    print (f"You got {correct} out of {len(flashdeck)-1} question(s) correctly.")
+    
 def create_flashdeck(title):
-    new_flashdeck_file = open(title + ".txt", "a")
+    open(title + ".txt", "a")
     create_flashcard(title)
     
 def create_flashcard(title):
