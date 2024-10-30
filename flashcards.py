@@ -33,9 +33,11 @@ def main():
     print("1) Practice" + "\n" + "2) My Flashdecks" +"\n" + "3) New Flashdeck" + "\n" + "4) Exit")
     chosen_option = input("\nOption: ")
     if chosen_option == "1":
-        choose_practice_deck()
+        #Listar upp
+        practice(list_choose_decks())
 #         
-#     elif chosen_option == "2":
+    elif chosen_option == "2":
+        view_my_flashdecks()
 #         
     elif chosen_option == "3":
         create_flashdeck(input("\nNew flashdeck title  "))
@@ -52,19 +54,32 @@ def main():
 #             
 #         elif chosen_option == "3":
 #             
-#         elif chosen_option == "4":
-#             shutdown()  
+    elif chosen_option == "4":
+        shutdown()  
 
-def choose_practice_deck():
+def load_file_as_list(title):
+    #skapar en lista där varje element är en dictionare med frågor och svar
+    with open(title + ".txt", 'r') as file:
+        lines = file.readlines()
+    list_of_dict = [json.loads(line.strip()) for line in lines]
+    return(list_of_dict)
+
+def flashdecks_names_list():
+    #skapar en lista med namnen på filerna, men tar bort ändelsen .txt för att göra en snygg lista
+    text_files_names = [file[:-4] for file in os.listdir(".") if file.endswith('.txt')]
+    return(text_files_names)
+
+
+def list_choose_decks():
     deck_number = 0
     flashdecks = flashdecks_names_list()
-    print("These are your flashdecks:")
+    print("\nThese are your flashdecks:")
     for deck in flashdecks:
         deck_number +=1
         print(f"{deck_number}) {deck}")
-    chosen_deck_input = int(input(f"Enter number of desired deck 1-{deck_number}: ")) -1
-    chosen_deck = flashdecks[chosen_deck_input]
-    practice(chosen_deck)
+    chosen_deck_input = int(input(f"\nEnter number of desired deck 1-{deck_number}: ")) -1
+    chosen_deck_title = flashdecks[chosen_deck_input]
+    return(chosen_deck_title)  
     
 def practice(title):
     list_of_cards = load_file_as_list(title)
@@ -95,18 +110,13 @@ def create_flashcard(title):
     file.close()
     view_flashdeck(title)
 
-def flashdecks_names_list():
-    #skapar en lista med namnen på filerna, men tar bort ändelsen .txt för att göra en snygg lista
-    text_files_names = [file[:-4] for file in os.listdir(".") if file.endswith('.txt')]
-    return(text_files_names)
-        
-def load_file_as_list(title):
-    #skapar en lista där varje element är en dictionare med frågor och svar
-    with open(title + ".txt", 'r') as file:
-        lines = file.readlines()
-    list_of_dict = [json.loads(line.strip()) for line in lines]
-    return(list_of_dict)
 
+        
+
+
+def view_my_flashdecks():
+    #listar upp alla decks och den som väljs visas upp
+    view_flashdeck(list_choose_decks())
 
 def view_flashdeck(title):
     print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
@@ -119,14 +129,17 @@ def view_flashdeck(title):
         print(f"{count}) " + card["question"])
         
     print("\nWhat do you want to do?\n")
-    print(f"a) Add new card \np) Practice \n1-{count}) Choose card to view")
+    print(f"a) Add new card \np) Practice \n1-{count}) Choose card to view \nb) Go back")
     option = input("Choose option: ")
     if option == "a":
         create_flashcard(title)
     elif option == "p":
         practice(title)
+    elif option == "p":
+        view_my_flashdecks()
     elif 1 <= int(option) <= count:
         view_card(title, int(option))
+    
     
 def view_card(title, card):
     print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
