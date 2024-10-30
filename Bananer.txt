@@ -1,0 +1,3 @@
+{"question":"Färg?", "answer":"Gul"}
+{"question":"form", "answer":"böjd"}
+{"question":"smak?", "answer":"söt"}

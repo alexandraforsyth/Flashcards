@@ -1,4 +1,5 @@
 import json
+import os
 
 math_flashdeck = [
     "Matte 3",
@@ -17,10 +18,10 @@ it_flashdeck = [
 # pickle
 
 
-flashdecks = [
-    math_flashdeck,
-    it_flashdeck,
-    ]
+# flashdecks = [
+#     math_flashdeck,
+#     it_flashdeck,
+#     ]
 
 def splash():
     print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -56,24 +57,28 @@ def main():
 
 def choose_practice_deck():
     deck_number = 0
+    flashdecks = flashdecks_names_list()
     print("These are your flashdecks:")
     for deck in flashdecks:
         deck_number +=1
-        print(f"{deck_number}) {deck[0]}")
+        print(f"{deck_number}) {deck}")
     chosen_deck_input = int(input(f"Enter number of desired deck 1-{deck_number}: ")) -1
     chosen_deck = flashdecks[chosen_deck_input]
     practice(chosen_deck)
     
 def practice(title):
     list_of_cards = load_file_as_list(title)
+    correct = 0
     for card in list_of_cards:
         if type(card) == dict: 
             print(card["question"])
             answer = input("Answer: ")
             if answer == card["answer"]:
                 print("Correct")
+                correct += 1
             else:
                 print("Incorrect")
+    print (f"You got {correct} out of {len(title)-1} question(s) correctly.")
 # def flashdecks():
 #     print
 
@@ -89,8 +94,14 @@ def create_flashcard(title):
     file.write('{"question":'+ question + ', "answer":'+ answer + '}\n')
     file.close()
     view_flashdeck(title)
+
+def flashdecks_names_list():
+    #skapar en lista med namnen på filerna, men tar bort ändelsen .txt för att göra en snygg lista
+    text_files_names = [file[:-4] for file in os.listdir(".") if file.endswith('.txt')]
+    return(text_files_names)
         
 def load_file_as_list(title):
+    #skapar en lista där varje element är en dictionare med frågor och svar
     with open(title + ".txt", 'r') as file:
         lines = file.readlines()
     list_of_dict = [json.loads(line.strip()) for line in lines]
@@ -130,5 +141,5 @@ def shutdown():
     print("Flashdecks shutting down.")
     exit()
     
-# main()
+main()
 
