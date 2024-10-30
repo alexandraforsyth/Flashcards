@@ -4,36 +4,33 @@ import os
 def splash():
     print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print("     Welcome to Flashdecks,\n a text-based flashcard program!")
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+    
 
 def startup():
     splash()
     main()
 
 def main():
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     print("1) Practice" + "\n" + "2) My Flashdecks" +"\n" + "3) New Flashdeck" + "\n" + "4) Exit")
-    chosen_option = input("\nOption: ")
-    if chosen_option == "1":
-        #Listar upp
-        practice(list_choose_decks())  
-    elif chosen_option == "2":
-        view_my_flashdecks()   
-    elif chosen_option == "3":
-        create_flashdeck(input("\nNew flashdeck title  ")) 
-    elif chosen_option == "4":
-        shutdown()
-    else:
-        while not chosen_option == "1" and not chosen_option == "2" and not chosen_option == "3" and not chosen_option == "4":
-            print("Please enter valid option.")
-            chosen_option = input("Option: ")
+    while True:
+        chosen_option = input("\nOption: ")
         if chosen_option == "1":
+            #Listar upp
             practice(list_choose_decks())
+            break 
         elif chosen_option == "2":
-            view_my_flashdecks()
+            view_my_flashdecks()   
+            break
         elif chosen_option == "3":
-            create_flashdeck(input("\nNew flashdeck title  "))
+            create_flashdeck(input("\nNew flashdeck title  ")) 
+            break
         elif chosen_option == "4":
-            shutdown()  
+            shutdown()
+            break
+        else:
+            print("Please enter valid option.")
+                
 
 def load_file_as_list(title):
     #skapar en lista där varje element är en dictionare med frågor och svar
@@ -48,23 +45,35 @@ def flashdecks_names_list():
     return(text_files_names)
 
 def list_choose_decks():
+    #en funktion som listar upp alla decks och låter användaren välja en
     deck_number = 0
     flashdecks = flashdecks_names_list()
-    print("\nThese are your flashdecks:")
+    print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("These are your flashdecks:")
     for deck in flashdecks:
         deck_number +=1
         print(f"{deck_number}) {deck}")
-    print("\nb) Go back")
-    chosen_deck_input = (input(f"\nOption: "))
-    if str.isdigit(chosen_deck_input):
-        chosen_deck_input = int(chosen_deck_input) -1
-        chosen_deck_title = flashdecks[chosen_deck_input]
-    else:
-        if chosen_deck_input == "b":
+    print("\nChoose deck by entering its number or")
+    print("b) Go back")
+    while True: 
+        chosen_deck_input = (input(f"\nChoose option: "))
+        if str.isdigit(chosen_deck_input):
+            chosen_deck_input = int(chosen_deck_input) -1
+            chosen_deck_title = flashdecks[chosen_deck_input]
+            break
+        elif chosen_deck_input == "b":
             main()
+            break
+        else:
+            print("Please enter valid option.")
+        
+    
     return(chosen_deck_title)  
     
 def practice(title):
+    print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(f"Practicing {title}!")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     list_of_cards = load_file_as_list(title)
     correct = 0
     questions = 0
@@ -73,7 +82,7 @@ def practice(title):
             questions += 1
             print(card["question"])
             answer = input("Answer: ")
-            if answer == card["answer"]:
+            if answer.lower() == card["answer"].lower():
                 print("Correct")
                 correct += 1
             else:
@@ -110,15 +119,23 @@ def view_flashdeck(title):
         
     print("\nWhat do you want to do?\n")
     print(f"a) Add new card \np) Practice \n1-{count}) Choose card to view \n\nb) Go back")
-    option = input("Choose option: ")
-    if option == "a":
-        create_flashcard(title)
-    elif option == "p":
-        practice(title)
-    elif option == "b":
-        view_my_flashdecks()
-    elif 1 <= int(option) <= count:
-        view_card(title, int(option))
+    while True: 
+        chosen_option = input("Choose option: ")
+        if chosen_option == "a":
+            create_flashcard(title)
+            break
+        elif chosen_option == "p":
+            practice(title)
+            break
+        elif chosen_option == "b":
+            view_my_flashdecks()
+            break
+        elif 1 <= int(chosen_option) <= count:
+            view_card(title, int(chosen_option))
+            break
+        else:
+            print("Please enter valid option.")
+
     
     
 def view_card(title, card):
@@ -129,9 +146,14 @@ def view_card(title, card):
     print("Question: " + card["question"])
     print("Answer: " + card["answer"])
     print("\nb) Go back")
-    option = input("Choose option: ")
-    if option == "b":
-        view_flashdeck(title)
+    while True: 
+        chosen_option = input("Choose option: ")
+        if chosen_option == "b":
+            view_flashdeck(title)
+            break
+        else:
+            print("Please enter valid option.")
+
     
 def shutdown():
     print("Flashdecks shutting down.")
